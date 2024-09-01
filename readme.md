@@ -1,6 +1,6 @@
 # Hello, I'm Felix Fergileosia 👋
 
-![Banner](https://drive.google.com/uc?export=view&id=1-nQOZKX5Zm5wfwSmi6Pl_S_a-0ayT5_h)
+![Banner](bronya-code.png)
 
 ## About Me 📚
 - 👨‍💻 I’m a backend engineer with 1.5 years of experience, now diving deeper into frontend development.
@@ -35,7 +35,7 @@
 - **Cypress**: ![Cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white) - End-to-end testing to ensure smooth user experiences.
 - **Postman**: ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) - My go-to tool for API testing and development.
 
-### Programming Languages
+### Other Programming Languages
 - **Java**: ![Java](https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white) - An object-oriented language that I’ve used in various backend projects.
 - **C**: ![C](https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black) - The language that introduced me to the world of programming.
 
