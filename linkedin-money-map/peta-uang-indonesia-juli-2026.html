@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Peta Uang Indonesia</title>
+<style>
+  :root {
+    --surface: #fcfcfb;
+    --plane: #f3f2ee;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --s1: #2a78d6;  /* blue */
+    --s2: #eb6834;  /* orange */
+    --s3: #1baf7a;  /* aqua */
+    --rest: #d6d5ce;
+  }
+  @page { size: 1080px 1350px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--surface); }
+  body { font-family: "Inter", system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .slide {
+    width: 1080px; height: 1350px; position: relative; overflow: hidden;
+    background: var(--surface); padding: 72px 72px 0; display: flex; flex-direction: column;
+    page-break-after: always; break-after: page;
+  }
+  .kicker { font-size: 17px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); display: flex; align-items: center; gap: 12px; }
+  .kicker::before { content: ""; width: 28px; height: 4px; border-radius: 2px; background: var(--s1); }
+  h1 { font-size: 50px; line-height: 1.12; font-weight: 700; letter-spacing: -0.02em; margin-top: 26px; text-wrap: balance; }
+  .sub { font-size: 23px; line-height: 1.4; color: var(--ink-2); margin-top: 18px; text-wrap: pretty; }
+  .chart { margin-top: 32px; flex: 1; min-height: 0; }
+  .chart svg { display: block; overflow: visible; }
+  .legend { display: flex; gap: 28px; font-size: 19px; color: var(--ink-2); margin-top: 26px; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 10px; }
+  .legend i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+  footer {
+    height: 92px; flex: none; display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--grid); font-size: 15px; color: var(--muted); margin: 0 -72px; padding: 0 72px;
+  }
+  footer b { color: var(--ink-2); font-weight: 600; }
+  .page { font-variant-numeric: tabular-nums; color: var(--ink-2); font-weight: 600; }
+
+  /* cover */
+  .hero { display: flex; align-items: flex-end; gap: 28px; margin-top: auto; }
+  .hero .num { font-size: 230px; font-weight: 800; line-height: .82; letter-spacing: -0.05em; }
+  .hero .num small { font-size: 120px; letter-spacing: -0.03em; }
+  .hero .cap { font-size: 26px; line-height: 1.35; color: var(--ink-2); padding-bottom: 8px; max-width: 420px; }
+  .hero .cap b { color: var(--ink); }
+  .split { margin-top: auto; display: grid; gap: 36px; }
+  .split .row-label { font-size: 19px; font-weight: 600; color: var(--ink-2); margin-bottom: 10px; display: flex; justify-content: space-between; }
+  .split .row-label span:last-child { font-weight: 400; color: var(--muted); }
+  .bar100 { display: flex; gap: 2px; height: 80px; }
+  .bar100 div { display: flex; align-items: center; padding: 0 22px; font-size: 23px; font-weight: 600; white-space: nowrap; }
+  .bar100 div:first-child { border-radius: 4px 0 0 4px; }
+  .bar100 div:last-child { border-radius: 0 4px 4px 0; justify-content: flex-end; }
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: auto; margin-bottom: 56px; }
+  .tile { background: var(--plane); border-radius: 14px; padding: 24px 26px; }
+  .tile .l { font-size: 17px; color: var(--ink-2); }
+  .tile .v { font-size: 40px; font-weight: 700; margin-top: 8px; letter-spacing: -0.02em; }
+  .tile .v small { font-size: 22px; font-weight: 600; color: var(--ink-2); margin-left: 4px; }
+  .swipe { position: absolute; right: 72px; top: 76px; font-size: 18px; font-weight: 600; color: var(--ink-2); }
+
+  /* takeaways */
+  .points { margin-top: 44px; display: grid; gap: 22px; }
+  .pt { display: grid; grid-template-columns: 64px 1fr; gap: 22px; padding: 32px 32px; background: var(--plane); border-radius: 14px; }
+  .pt .n { width: 52px; height: 52px; border-radius: 50%; background: var(--ink); color: var(--surface); display: grid; place-items: center; font-weight: 700; font-size: 22px; }
+  .pt h3 { font-size: 29px; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; }
+  .pt p { font-size: 22px; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
+  .note { font-size: 17px; line-height: 1.5; color: var(--muted); margin-top: auto; margin-bottom: 34px; }
+  .note b { color: var(--ink-2); }
+  .cta { font-size: 28px; font-weight: 700; margin-top: 44px; }
+</style>
+</head>
+<body>
+<script>
+const DATA = [{"provinsi":"Aceh","kode":11,"simpanan":48902427,"kredit":61621991,"modal_kerja":12938702,"investasi":11358109,"konsumsi":37325181,"umkm":14477103,"ldr":126.01},{"provinsi":"Sumatera Utara","kode":12,"simpanan":344702046,"kredit":333564759,"modal_kerja":146804657,"investasi":90219165,"konsumsi":96540937,"umkm":80425083,"ldr":96.77},{"provinsi":"Sumatera Barat","kode":13,"simpanan":65362484,"kredit":85661578,"modal_kerja":30335682,"investasi":16136417,"konsumsi":39189479,"umkm":30280848,"ldr":131.06},{"provinsi":"Riau","kode":14,"simpanan":135331823,"kredit":186185634,"modal_kerja":74205203,"investasi":61845548,"konsumsi":50134884,"umkm":45569762,"ldr":137.58},{"provinsi":"Jambi","kode":15,"simpanan":52903274,"kredit":85344613,"modal_kerja":23625145,"investasi":33364927,"konsumsi":28354542,"umkm":29134713,"ldr":161.32},{"provinsi":"Sumatera Selatan","kode":16,"simpanan":119005715,"kredit":201384822,"modal_kerja":71615903,"investasi":65067424,"konsumsi":64701495,"umkm":41922682,"ldr":169.22},{"provinsi":"Bengkulu","kode":17,"simpanan":20488719,"kredit":39512654,"modal_kerja":9562123,"investasi":11590151,"konsumsi":18360380,"umkm":15435399,"ldr":192.85},{"provinsi":"Lampung","kode":18,"simpanan":75111771,"kredit":113745603,"modal_kerja":52221098,"investasi":20213542,"konsumsi":41310963,"umkm":32887740,"ldr":151.44},{"provinsi":"Kepulauan Bangka Belitung","kode":19,"simpanan":31460515,"kredit":32336310,"modal_kerja":12116344,"investasi":9803596,"konsumsi":10416370,"umkm":7243953,"ldr":102.78},{"provinsi":"Kepulauan Riau","kode":21,"simpanan":120693221,"kredit":125064661,"modal_kerja":39901639,"investasi":52314212,"konsumsi":32848810,"umkm":17375687,"ldr":103.62},{"provinsi":"DKI Jakarta","kode":31,"simpanan":5029623279,"kredit":3136225991,"modal_kerja":1674234450,"investasi":1162678320,"konsumsi":299313222,"umkm":157001323,"ldr":62.36},{"provinsi":"Jawa Barat","kode":32,"simpanan":766385484,"kredit":1117192820,"modal_kerja":342523713,"investasi":256850595,"konsumsi":517818511,"umkm":192429242,"ldr":145.77},{"provinsi":"Jawa Tengah","kode":33,"simpanan":484816437,"kredit":534340132,"modal_kerja":255775858,"investasi":126515141,"konsumsi":152049133,"umkm":187405672,"ldr":110.21},{"provinsi":"DI Yogyakarta","kode":34,"simpanan":95453520,"kredit":69424168,"modal_kerja":20890435,"investasi":23202388,"konsumsi":25331345,"umkm":23074605,"ldr":72.73},{"provinsi":"Jawa Timur","kode":35,"simpanan":848184209,"kredit":764586093,"modal_kerja":372641109,"investasi":156046011,"konsumsi":235898974,"umkm":227426268,"ldr":90.14},{"provinsi":"Banten","kode":36,"simpanan":342906020,"kredit":538640717,"modal_kerja":207551744,"investasi":118328701,"konsumsi":212760272,"umkm":60998338,"ldr":157.08},{"provinsi":"Bali","kode":51,"simpanan":202124008,"kredit":150619107,"modal_kerja":40531639,"investasi":61893698,"konsumsi":48193769,"umkm":57920612,"ldr":74.52},{"provinsi":"Nusa Tenggara Barat","kode":52,"simpanan":51266767,"kredit":125609483,"modal_kerja":51259054,"investasi":36798342,"konsumsi":37552088,"umkm":22368456,"ldr":245.01},{"provinsi":"Nusa Tenggara Timur","kode":53,"simpanan":39782144,"kredit":55372643,"modal_kerja":17480641,"investasi":5905672,"konsumsi":31986330,"umkm":17113621,"ldr":139.19},{"provinsi":"Kalimantan Barat","kode":61,"simpanan":93119397,"kredit":112977501,"modal_kerja":26637042,"investasi":47059983,"konsumsi":39280476,"umkm":30412265,"ldr":121.33},{"provinsi":"Kalimantan Tengah","kode":62,"simpanan":54043349,"kredit":96429921,"modal_kerja":35404323,"investasi":35856369,"konsumsi":25169230,"umkm":20030227,"ldr":178.43},{"provinsi":"Kalimantan Selatan","kode":63,"simpanan":98045515,"kredit":108447743,"modal_kerja":29399858,"investasi":42779249,"konsumsi":36268636,"umkm":22806756,"ldr":110.61},{"provinsi":"Kalimantan Timur","kode":64,"simpanan":152364685,"kredit":227683584,"modal_kerja":86923803,"investasi":101454054,"konsumsi":39305726,"umkm":32460092,"ldr":149.43},{"provinsi":"Kalimantan Utara","kode":65,"simpanan":17493534,"kredit":46450155,"modal_kerja":12995220,"investasi":26076773,"konsumsi":7378161,"umkm":5486386,"ldr":265.53},{"provinsi":"Sulawesi Utara","kode":71,"simpanan":34175605,"kredit":73277279,"modal_kerja":18270388,"investasi":18027957,"konsumsi":36978934,"umkm":13570300,"ldr":214.41},{"provinsi":"Sulawesi Tengah","kode":72,"simpanan":41637206,"kredit":108909572,"modal_kerja":36158987,"investasi":41264168,"konsumsi":31486418,"umkm":17952996,"ldr":261.57},{"provinsi":"Sulawesi Selatan","kode":73,"simpanan":146555586,"kredit":195450092,"modal_kerja":63397556,"investasi":42472781,"konsumsi":89579755,"umkm":61330991,"ldr":133.36},{"provinsi":"Sulawesi Tenggara","kode":74,"simpanan":34234487,"kredit":55335330,"modal_kerja":17480865,"investasi":11208990,"konsumsi":26645476,"umkm":16680871,"ldr":161.64},{"provinsi":"Gorontalo","kode":75,"simpanan":7969465,"kredit":27369949,"modal_kerja":9465627,"investasi":4983808,"konsumsi":12920514,"umkm":5018491,"ldr":343.44},{"provinsi":"Sulawesi Barat","kode":76,"simpanan":8507454,"kredit":19519006,"modal_kerja":5473486,"investasi":4255890,"konsumsi":9789629,"umkm":7827682,"ldr":229.43},{"provinsi":"Maluku","kode":81,"simpanan":15944300,"kredit":22771603,"modal_kerja":6547697,"investasi":1671453,"konsumsi":14552452,"umkm":6706037,"ldr":142.82},{"provinsi":"Maluku Utara","kode":82,"simpanan":21574116,"kredit":34924988,"modal_kerja":8774164,"investasi":14061934,"konsumsi":12088889,"umkm":4103826,"ldr":161.88},{"provinsi":"Papua","kode":91,"simpanan":50013873,"kredit":57144256,"modal_kerja":14547727,"investasi":14595370,"konsumsi":28001160,"umkm":13308860,"ldr":114.26},{"provinsi":"Papua Barat","kode":92,"simpanan":16714980,"kredit":26553065,"modal_kerja":5705855,"investasi":7344969,"konsumsi":13502242,"umkm":5780549,"ldr":158.86}];
+</script>
+
+<!-- 1 · COVER -->
+<section class="slide" id="s1">
+  <div class="kicker">Peta Uang Indonesia · Juli 2026</div>
+  <div class="swipe">Geser →</div>
+  <h1>Separuh uang yang disimpan di bank di Indonesia tercatat di Jakarta.</h1>
+  <div class="hero">
+    <div class="num" id="hero-num"></div>
+    <div class="cap" id="hero-cap"></div>
+  </div>
+  <div class="split" id="cover-split"></div>
+  <div class="tiles" id="cover-tiles"></div>
+  <footer><span><b>Sumber:</b> Bank Indonesia, Statistik Ekonomi &amp; Keuangan Daerah (SEKDA), posisi Juli 2026</span><span class="page">1 / 6</span></footer>
+</section>
+
+<!-- 2 · SHARE SIMPANAN VS KREDIT -->
+<section class="slide" id="s2">
+  <div class="kicker">Simpanan vs kredit</div>
+  <h1 id="s2-h"></h1>
+  <p class="sub">Porsi tiap provinsi terhadap total nasional, %. 10 provinsi dengan simpanan terbesar.</p>
+  <div class="legend"><span><i style="background:var(--s1)"></i>Porsi simpanan (DPK)</span><span><i style="background:var(--s2)"></i>Porsi kredit</span></div>
+  <div class="chart" id="c2"></div>
+  <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026 · Simpanan = giro + tabungan + deposito</span><span class="page">2 / 6</span></footer>
+</section>
+
+<!-- 3 · LDR -->
+<section class="slide" id="s3">
+  <div class="kicker">Rasio kredit terhadap simpanan</div>
+  <h1 id="s3-h"></h1>
+  <p class="sub">Rasio kredit / simpanan (LDR) per provinsi, %. Di atas 100% berarti kredit yang disalurkan lebih besar dari dana yang dihimpun di provinsi itu.</p>
+  <div class="legend"><span><i style="background:var(--s2)"></i>Kredit &gt; simpanan</span><span><i style="background:var(--s1)"></i>Kredit &lt; simpanan</span></div>
+  <div class="chart" id="c3"></div>
+  <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026</span><span class="page">3 / 6</span></footer>
+</section>
+
+<!-- 4 · KOMPOSISI KREDIT -->
+<section class="slide" id="s4">
+  <div class="kicker">Untuk apa kredit dipakai</div>
+  <h1 id="s4-h"></h1>
+  <p class="sub">Komposisi kredit menurut penggunaan, % dari total kredit provinsi. Diurutkan dari porsi konsumsi terbesar.</p>
+  <div class="legend"><span><i style="background:var(--s1)"></i>Konsumsi</span><span><i style="background:var(--s2)"></i>Modal kerja</span><span><i style="background:var(--s3)"></i>Investasi</span></div>
+  <div class="chart" id="c4"></div>
+  <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026</span><span class="page">4 / 6</span></footer>
+</section>
+
+<!-- 5 · UMKM -->
+<section class="slide" id="s5">
+  <div class="kicker">Kredit UMKM</div>
+  <h1 id="s5-h"></h1>
+  <p class="sub">Porsi kredit UMKM terhadap total kredit di tiap provinsi, %.</p>
+  <div class="chart" id="c5"></div>
+  <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026 · UMKM = mikro + kecil + menengah</span><span class="page">5 / 6</span></footer>
+</section>
+
+<!-- 6 · TAKEAWAYS -->
+<section class="slide" id="s6">
+  <div class="kicker">Ringkasan</div>
+  <h1>Apa yang bisa kita baca dari peta ini?</h1>
+  <div class="points" id="points"></div>
+  <div class="cta">Provinsi Anda ada di posisi mana? Tulis di kolom komentar 👇</div>
+  <p class="note" id="note"></p>
+  <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026 · 34 provinsi</span><span class="page">6 / 6</span></footer>
+</section>
+
+<script>
+const NS = "http://www.w3.org/2000/svg";
+const css = getComputedStyle(document.documentElement);
+const C = n => css.getPropertyValue("--" + n).trim();
+const pct = (v, d = 1) => v.toFixed(d).replace(".", ",") + "%";
+const num = (v, d = 1) => v.toFixed(d).replace(".", ",");
+const trn = v => Math.round(v / 1e6).toLocaleString("id-ID"); // juta Rp -> triliun Rp
+const short = p => ({"Kepulauan Bangka Belitung":"Kep. Bangka Belitung","Nusa Tenggara Barat":"Nusa Tenggara Barat","Nusa Tenggara Timur":"Nusa Tenggara Timur"}[p] || p);
+
+function el(tag, attrs = {}, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function text(parent, x, y, s, o = {}) {
+  const t = el("text", { x, y, "font-size": o.size || 17, fill: o.fill || C("ink-2"), "text-anchor": o.anchor || "start",
+    "dominant-baseline": "central", "font-weight": o.weight || 400, "font-family": "Inter, system-ui, sans-serif" }, parent);
+  if (o.tabular) t.setAttribute("style", "font-variant-numeric: tabular-nums");
+  if (o.halo) { t.setAttribute("stroke", C("surface")); t.setAttribute("stroke-width", 5); t.setAttribute("paint-order", "stroke"); t.setAttribute("stroke-linejoin", "round"); }
+  t.textContent = s; return t;
+}
+// horizontal bar: square at baseline (x0), 4px rounded data-end
+function hbar(parent, x0, y, w, h, fill, r = 4) {
+  r = Math.min(r, w, h / 2);
+  if (w <= 0) return;
+  el("path", { d: `M${x0},${y} h${w - r} a${r},${r} 0 0 1 ${r},${r} v${h - 2 * r} a${r},${r} 0 0 1 ${-r},${r} h${-(w - r)} z`, fill }, parent);
+}
+function lum(hex) {
+  const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+  return .2126 * c[0] + .7152 * c[1] + .0722 * c[2];
+}
+const onFill = hex => { const L = lum(hex); return (1.05 / (L + .05)) >= 4 ? "#ffffff" : "#0b0b0b"; };
+function svgIn(id) {
+  const box = document.getElementById(id);
+  const W = box.clientWidth, H = box.clientHeight;
+  const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, box);
+  return { svg, W, H };
+}
+
+// ---------- derived numbers ----------
+const rows = DATA.map(d => ({ ...d, umkmShare: d.umkm / d.kredit * 100, konsShare: d.konsumsi / d.kredit * 100,
+  mkShare: d.modal_kerja / d.kredit * 100, invShare: d.investasi / d.kredit * 100 }));
+const S = rows.reduce((a, d) => a + d.simpanan, 0);
+const K = rows.reduce((a, d) => a + d.kredit, 0);
+const U = rows.reduce((a, d) => a + d.umkm, 0);
+const KONS = rows.reduce((a, d) => a + d.konsumsi, 0);
+const jkt = rows.find(d => d.provinsi === "DKI Jakarta");
+const over = rows.filter(d => d.ldr > 100);
+const jawaCodes = [31, 32, 33, 34, 35, 36];
+const jawaS = rows.filter(d => jawaCodes.includes(d.kode)).reduce((a, d) => a + d.simpanan, 0);
+const jawaK = rows.filter(d => jawaCodes.includes(d.kode)).reduce((a, d) => a + d.kredit, 0);
+const byLdr = [...rows].sort((a, b) => b.ldr - a.ldr);
+const byUmkm = [...rows].sort((a, b) => b.umkmShare - a.umkmShare);
+const byKons = [...rows].sort((a, b) => b.konsShare - a.konsShare);
+window.STATS = { S, K, ldr: K / S * 100, jktS: jkt.simpanan / S * 100, jktK: jkt.kredit / K * 100, over: over.length,
+  jawaS: jawaS / S * 100, jawaK: jawaK / K * 100, umkmNat: U / K * 100, konsNat: KONS / K * 100 };
+
+// ---------- 1 · cover ----------
+const jS = jkt.simpanan / S * 100, jK = jkt.kredit / K * 100;
+document.getElementById("hero-num").innerHTML = Math.round(jS) + "<small>%</small>";
+document.getElementById("hero-cap").innerHTML =
+  `dari total <b>Rp${trn(S)} triliun</b> simpanan masyarakat di bank berada di <b>DKI Jakarta</b>, padahal kredit yang disalurkan di sana hanya <b>${pct(jK, 0)}</b> dari total nasional.`;
+document.getElementById("cover-split").innerHTML = [
+  ["Simpanan (DPK)", jS, `Rp${trn(S)} T`],
+  ["Kredit", jK, `Rp${trn(K)} T`],
+].map(([l, v, tot]) => `
+  <div><div class="row-label"><span>${l}</span><span>Total nasional ${tot}</span></div>
+  <div class="bar100">
+    <div style="width:${v}%;background:var(--s1);color:${onFill(C("s1"))}">DKI Jakarta ${pct(v)}</div>
+    <div style="width:${100 - v}%;background:var(--rest);color:var(--ink)">33 provinsi lain ${pct(100 - v)}</div>
+  </div></div>`).join("");
+document.getElementById("cover-tiles").innerHTML = [
+  ["Total simpanan", `Rp${trn(S)}`, "T"],
+  ["Total kredit", `Rp${trn(K)}`, "T"],
+  ["Rasio kredit/simpanan", num(K / S * 100), "%"],
+].map(([l, v, u]) => `<div class="tile"><div class="l">${l}</div><div class="v">${v}<small>${u}</small></div></div>`).join("");
+
+// ---------- 2 · share simpanan vs kredit ----------
+(() => {
+  document.getElementById("s2-h").textContent =
+    `Jakarta menghimpun ${pct(jS, 0)} simpanan nasional, tapi hanya menyalurkan ${pct(jK, 0)} kredit.`;
+  const top = [...rows].sort((a, b) => b.simpanan - a.simpanan);
+  const show = top.slice(0, 10).map(d => ({ name: d.provinsi, s: d.simpanan / S * 100, k: d.kredit / K * 100 }));
+  const rest = top.slice(10);
+  show.push({ name: `${rest.length} provinsi lainnya`, s: rest.reduce((a, d) => a + d.simpanan, 0) / S * 100,
+    k: rest.reduce((a, d) => a + d.kredit, 0) / K * 100, other: true });
+  const { svg, W, H } = svgIn("c2");
+  const labelW = 250, valW = 80, x0 = labelW, pw = W - labelW - valW;
+  const max = 55, sx = v => v / max * pw;
+  const topPad = 34, rowH = (H - topPad - 10) / show.length, bh = 20;
+  [0, 10, 20, 30, 40, 50].forEach(t => {
+    el("line", { x1: x0 + sx(t), x2: x0 + sx(t), y1: topPad - 4, y2: H - 10, stroke: C("grid"), "stroke-width": 1 }, svg);
+    text(svg, x0 + sx(t), 12, t + "%", { size: 15, fill: C("muted"), anchor: "middle", tabular: true });
+  });
+  show.forEach((d, i) => {
+    const cy = topPad + i * rowH + rowH / 2;
+    text(svg, 0, cy, d.name, { size: 19, fill: d.other ? C("muted") : C("ink"), weight: d.name === "DKI Jakarta" ? 700 : 500 });
+    const y1 = cy - bh - 1, y2 = cy + 1;
+    hbar(svg, x0, y1, sx(d.s), bh, C("s1"));
+    hbar(svg, x0, y2, sx(d.k), bh, C("s2"));
+    text(svg, x0 + sx(d.s) + 8, y1 + bh / 2, pct(d.s), { size: 16, fill: C("ink"), weight: 600, tabular: true });
+    text(svg, x0 + sx(d.k) + 8, y2 + bh / 2, pct(d.k), { size: 16, fill: C("ink-2"), tabular: true });
+  });
+  el("line", { x1: x0, x2: x0, y1: topPad - 4, y2: H - 10, stroke: C("axis"), "stroke-width": 1 }, svg);
+})();
+
+// ---------- 3 · LDR ----------
+(() => {
+  const g = byLdr[0];
+  document.getElementById("s3-h").textContent =
+    `${over.length} dari 34 provinsi menyalurkan kredit lebih besar dari simpanan yang dihimpunnya.`;
+  const { svg, W, H } = svgIn("c3");
+  const labelW = 250, valW = 70, x0 = labelW, pw = W - labelW - valW;
+  const max = 350, sx = v => v / max * pw;
+  const topPad = 34, rowH = (H - topPad) / byLdr.length, bh = Math.min(18, rowH - 6);
+  [0, 50, 100, 150, 200, 250, 300, 350].forEach(t => {
+    if (t !== 100) el("line", { x1: x0 + sx(t), x2: x0 + sx(t), y1: topPad - 4, y2: H, stroke: C("grid"), "stroke-width": 1 }, svg);
+    text(svg, x0 + sx(t), 12, t + "%", { size: 15, fill: t === 100 ? C("ink") : C("muted"), anchor: "middle", weight: t === 100 ? 700 : 400, tabular: true });
+  });
+  const later = [];
+  byLdr.forEach((d, i) => {
+    const cy = topPad + i * rowH + rowH / 2;
+    const hl = d === g || d === jkt;
+    text(svg, x0 - 14, cy, short(d.provinsi), { size: 16, anchor: "end", fill: C("ink"), weight: hl ? 700 : 400 });
+    hbar(svg, x0, cy - bh / 2, sx(d.ldr), bh, d.ldr > 100 ? C("s2") : C("s1"));
+    later.push(() => text(svg, x0 + sx(d.ldr) + 7, cy, num(d.ldr, 0), { size: 15, fill: hl ? C("ink") : C("ink-2"), weight: hl ? 700 : 400, tabular: true, halo: true }));
+  });
+  el("line", { x1: x0 + sx(100), x2: x0 + sx(100), y1: topPad - 4, y2: H, stroke: C("ink"), "stroke-width": 1.5 }, svg);
+  el("line", { x1: x0, x2: x0, y1: topPad - 4, y2: H, stroke: C("axis"), "stroke-width": 1 }, svg);
+  later.forEach(f => f());
+  // annotations
+  const ann = (x, y, lines, anchor = "start") => lines.forEach((s, j) =>
+    text(svg, x, y + j * 24, s, { size: 18, fill: j ? C("ink-2") : C("ink"), weight: j ? 400 : 700, anchor }));
+  const gy = topPad + rowH / 2;
+  ann(x0 + sx(215), topPad + 9.5 * rowH, [`${g.provinsi}: ${num(g.ldr, 0)}%`, `≈ Rp${num(g.ldr / 100, 1)} kredit untuk`, `setiap Rp1 simpanan`]);
+  const jy = topPad + byLdr.indexOf(jkt) * rowH + rowH / 2;
+  ann(x0 + sx(140), jy - 26, [`DKI Jakarta: ${num(jkt.ldr, 0)}%`, `surplus simpanan ±Rp${trn(jkt.simpanan - jkt.kredit)} T`]);
+})();
+
+// ---------- 4 · komposisi kredit ----------
+(() => {
+  const hi = byKons[0];
+  document.getElementById("s4-h").textContent =
+    `${hi.provinsi}: ${pct(hi.konsShare, 0)} kreditnya untuk konsumsi. Jakarta: hanya ${pct(jkt.konsShare, 1)}.`;
+  const { svg, W, H } = svgIn("c4");
+  const labelW = 250, x0 = labelW, pw = W - labelW - 4;
+  const topPad = 34, rowH = (H - topPad) / byKons.length, bh = Math.min(22, rowH - 4), gap = 2;
+  [0, 25, 50, 75, 100].forEach(t => {
+    text(svg, x0 + t / 100 * pw, 12, t + "%", { size: 15, fill: C("muted"), anchor: t === 100 ? "end" : t === 0 ? "start" : "middle", tabular: true });
+  });
+  byKons.forEach((d, i) => {
+    const cy = topPad + i * rowH + rowH / 2, y = cy - bh / 2;
+    const hl = d === hi || d === jkt;
+    text(svg, x0 - 14, cy, short(d.provinsi), { size: 16, anchor: "end", fill: C("ink"), weight: hl ? 700 : 400 });
+    const segs = [[d.konsShare, C("s1")], [d.mkShare, C("s2")], [d.invShare, C("s3")]];
+    const usable = pw - gap * (segs.length - 1);
+    let x = x0;
+    segs.forEach(([v, col], j) => {
+      const w = v / 100 * usable;
+      if (j === segs.length - 1) hbar(svg, x, y, w, bh, col);
+      else el("rect", { x, y, width: w, height: bh, fill: col }, svg);
+      if (w > 52) text(svg, x + 8, cy, pct(v, j === 0 ? 1 : 0), { size: 14, fill: onFill(col), weight: j === 0 ? 700 : 500, tabular: true });
+      x += w + gap;
+    });
+  });
+})();
+
+// ---------- 5 · UMKM ----------
+(() => {
+  const hi = byUmkm[0], nat = U / K * 100;
+  document.getElementById("s5-h").textContent =
+    `Kredit UMKM: ${pct(hi.umkmShare, 0)} di ${hi.provinsi}, hanya ${pct(jkt.umkmShare, 0)} di Jakarta.`;
+  const { svg, W, H } = svgIn("c5");
+  const labelW = 250, valW = 70, x0 = labelW, pw = W - labelW - valW;
+  const max = 45, sx = v => v / max * pw;
+  const topPad = 34, rowH = (H - topPad) / byUmkm.length, bh = Math.min(18, rowH - 6);
+  [0, 10, 20, 30, 40].forEach(t => {
+    el("line", { x1: x0 + sx(t), x2: x0 + sx(t), y1: topPad - 4, y2: H, stroke: C("grid"), "stroke-width": 1 }, svg);
+    text(svg, x0 + sx(t), 12, t + "%", { size: 15, fill: C("muted"), anchor: "middle", tabular: true });
+  });
+  const later = [], nx = x0 + sx(nat);
+  byUmkm.forEach((d, i) => {
+    const cy = topPad + i * rowH + rowH / 2;
+    const isJ = d === jkt;
+    text(svg, x0 - 14, cy, short(d.provinsi), { size: 16, anchor: "end", fill: C("ink"), weight: isJ || d === hi ? 700 : 400 });
+    hbar(svg, x0, cy - bh / 2, sx(d.umkmShare), bh, isJ ? C("s2") : C("s1"));
+    later.push(() => text(svg, x0 + sx(d.umkmShare) + 7, cy, num(d.umkmShare, 1), { size: 15, fill: isJ ? C("ink") : C("ink-2"), weight: isJ ? 700 : 400, tabular: true, halo: true }));
+  });
+  el("line", { x1: x0, x2: x0, y1: topPad - 4, y2: H, stroke: C("axis"), "stroke-width": 1 }, svg);
+  el("line", { x1: nx, x2: nx, y1: topPad - 4, y2: H, stroke: C("ink"), "stroke-width": 1.5 }, svg);
+  later.forEach(f => f());
+  const jy = topPad + byUmkm.indexOf(jkt) * rowH + rowH / 2;
+  text(svg, nx + 10, jy - 120, `Rata-rata nasional: ${pct(nat)}`, { size: 18, fill: C("ink"), weight: 700 });
+  text(svg, nx + 10, jy - 96, `Rp${trn(U)} T dari Rp${trn(K)} T kredit`, { size: 18, fill: C("ink-2") });
+})();
+
+// ---------- 6 · takeaways ----------
+document.getElementById("points").innerHTML = [
+  [`Uang menumpuk di Jakarta`, `${pct(jS)} simpanan nasional tercatat di Jakarta, sementara porsi kreditnya ${pct(jK)}. Pulau Jawa secara keseluruhan memegang ${pct(jawaS / S * 100, 0)} simpanan dan ${pct(jawaK / K * 100, 0)} kredit.`],
+  [`Daerah meminjam lebih dari yang ditabung`, `${over.length} dari 34 provinsi punya rasio kredit/simpanan di atas 100%. Tertinggi ${byLdr[0].provinsi} (${num(byLdr[0].ldr, 0)}%), ${byLdr[1].provinsi} (${num(byLdr[1].ldr, 0)}%), dan ${byLdr[2].provinsi} (${num(byLdr[2].ldr, 0)}%).`],
+  [`Wajah kredit berbeda per daerah`, `Kredit konsumsi mencapai ${pct(byKons[0].konsShare, 0)} di ${byKons[0].provinsi}, tapi hanya ${pct(jkt.konsShare)} di Jakarta yang didominasi kredit korporasi (modal kerja & investasi).`],
+  [`UMKM paling terasa di daerah`, `Secara nasional ${pct(U / K * 100)} kredit mengalir ke UMKM. Porsinya ${pct(byUmkm[0].umkmShare, 0)} di ${byUmkm[0].provinsi}, dan hanya ${pct(jkt.umkmShare)} di Jakarta.`],
+].map(([h, p], i) => `<div class="pt"><div class="n">${i + 1}</div><div><h3>${h}</h3><p>${p}</p></div></div>`).join("");
+document.getElementById("note").innerHTML =
+  `<b>Catatan:</b> data dicatat berdasarkan lokasi kantor bank, sehingga simpanan korporasi dan instansi yang berkantor pusat di Jakarta ikut tercatat di Jakarta, meskipun aktivitas usahanya tersebar di daerah. Rasio di atas 100% menandakan sebagian kredit di provinsi itu didanai dari luar daerah, misalnya dari dana yang dihimpun bank di provinsi lain.`;
+</script>
+</body>
+</html>
