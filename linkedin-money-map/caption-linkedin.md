@@ -39,3 +39,31 @@ Provinsimu gimana? 👇
 Sumber: Bank Indonesia (SEKDA), Juli 2026
 
 #EkonomiIndonesia #Perbankan #DataVisualization #UMKM
+
+## Versi C — sudut pandang software engineer di perusahaan finance
+
+Angka paling menarik dari data ini bukan "52%". Tapi kenapa angkanya bisa 52%.
+
+Aku iseng ngulik data publik Bank Indonesia (SEKDA, posisi Juli 2026) untuk 34 provinsi. Hasil pertamanya bikin kaget: Jakarta pegang 52% simpanan bank nasional, tapi kreditnya cuma 35%. Sekilas kesannya duit se-Indonesia numpuk di Jakarta.
+
+Tapi insting engineer langsung nanya: "datanya dicatat di mana?"
+
+Ternyata simpanan dicatat berdasarkan lokasi kantor bank. Rekening perusahaan dan instansi yang kantor pusatnya di Jakarta ikut kehitung Jakarta, walaupun operasionalnya di Kalimantan atau Sulawesi.
+
+Mirip dashboard yang ngitung traffic berdasarkan lokasi server, bukan lokasi user. Angkanya nggak salah, tapi kesimpulannya bisa meleset kalau kita nggak paham cara datanya direkam.
+
+Hal lain yang muncul dari data yang sama:
+📈 29 dari 34 provinsi menyalurkan kredit lebih besar dari simpanannya. Gorontalo paling ekstrem: Rp3,4 kredit untuk tiap Rp1 simpanan.
+🏪 Porsi kredit UMKM 40% di Sulawesi Barat, cuma 5% di Jakarta.
+🛒 Di Maluku, 64% kredit buat konsumsi. Di Jakarta cuma 9,5%.
+
+Yang aku bawa pulang sebagai engineer di industri finance:
+→ Sebelum percaya sama angka, pahami dulu gimana angka itu dicatat. Data lineage bukan cuma urusan tim data.
+→ Satu field "lokasi" di sistem bisa ngubah cerita yang nanti dibaca tim bisnis, manajemen, bahkan regulator.
+→ Ngulik data publik di industri sendiri itu cara paling cepat buat ngerti bisnis tempat kita kerja.
+
+Teman-teman engineer di bank, fintech, atau multifinance: pernah nemu kasus "angkanya benar, tapi ceritanya salah" gara-gara cara data dicatat? Share di komentar 👇
+
+Sumber: Bank Indonesia, Statistik Ekonomi dan Keuangan Daerah (SEKDA), Juli 2026
+
+#SoftwareEngineering #DataEngineering #Fintech #EkonomiIndonesia #DataVisualization
