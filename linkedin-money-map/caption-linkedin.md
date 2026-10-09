@@ -1,18 +1,41 @@
-# Draf caption LinkedIn
+# Caption LinkedIn (santai)
 
-Separuh uang yang disimpan di bank di Indonesia tercatat di Jakarta. 🏦
+## Versi A — utama
 
-Saya mengolah data Statistik Ekonomi & Keuangan Daerah (SEKDA) Bank Indonesia, posisi Juli 2026, untuk 34 provinsi. Beberapa temuan:
+Separuh duit yang disimpan di bank se-Indonesia ternyata tercatat di Jakarta. Bukan 20%, bukan 30%, tapi 52%. 🤯
 
-1️⃣ 52% simpanan nasional (Rp5.030 T dari Rp9.667 T) tercatat di DKI Jakarta, tapi porsi kreditnya hanya 35%.
-2️⃣ 29 dari 34 provinsi menyalurkan kredit lebih besar dari simpanan yang dihimpunnya. Gorontalo tertinggi: rasio kredit/simpanan 343%.
-3️⃣ Di Maluku, 64% kredit dipakai untuk konsumsi. Di Jakarta hanya 9,5%; sisanya modal kerja & investasi.
-4️⃣ Secara nasional 17% kredit mengalir ke UMKM. Di Sulawesi Barat porsinya 40%, di Jakarta hanya 5%.
+Iseng ngulik data SEKDA Bank Indonesia (posisi Juli 2026) buat 34 provinsi, dan ada beberapa hal yang bikin aku mikir:
 
-Catatan: data dicatat berdasarkan lokasi kantor bank, jadi simpanan korporasi & instansi yang berkantor pusat di Jakarta ikut tercatat di Jakarta.
+💰 Jakarta pegang 52% simpanan nasional, tapi kredit yang disalurin di sana cuma 35%. Duitnya ngumpul di Jakarta, ngalirnya ke mana-mana.
 
-Provinsi Anda ada di posisi mana? 👇
+📈 29 dari 34 provinsi justru minjem lebih banyak dari yang ditabung. Juaranya Gorontalo: tiap Rp1 simpanan, ada Rp3,4 kredit.
 
-Sumber: Bank Indonesia, SEKDA (Juli 2026)
+🛒 Di Maluku, 64% kredit dipakai buat konsumsi. Di Jakarta? Cuma 9,5%, sisanya buat modal kerja dan investasi.
 
-#Ekonomi #Perbankan #DataVisualization #Indonesia #UMKM #BankIndonesia
+🏪 Rata-rata nasional, 17% kredit masuk ke UMKM. Di Sulawesi Barat tembus 40%, di Jakarta cuma 5%.
+
+Tapi sebelum buru-buru nyimpulin "Jakarta nyedot duit daerah" 😅 ada catatannya: data ini dicatat berdasarkan lokasi kantor bank. Jadi rekening perusahaan dan instansi yang kantor pusatnya di Jakarta ikut kehitung Jakarta, padahal bisnisnya bisa di mana aja.
+
+Geser carousel-nya buat lihat posisi semua provinsi 👉
+
+Provinsimu ada di urutan berapa? Kaget nggak? Cerita di komentar ya 👇
+
+Sumber: Bank Indonesia, Statistik Ekonomi dan Keuangan Daerah (SEKDA), Juli 2026
+
+#EkonomiIndonesia #Perbankan #UMKM #DataVisualization #LiterasiKeuangan
+
+## Versi B — pendek
+
+Pertanyaan iseng: kalau semua tabungan di bank se-Indonesia dikumpulin, berapa persen yang ada di Jakarta?
+
+Jawabannya: 52%. Separuh lebih. 😳
+
+Padahal kredit yang disalurin di Jakarta cuma 35% dari total nasional. Sebaliknya, 29 dari 34 provinsi malah minjem lebih banyak dari yang ditabung, dengan Gorontalo paling ekstrem (Rp3,4 kredit untuk tiap Rp1 simpanan).
+
+Aku rangkum semuanya di carousel ini, dari simpanan, kredit, sampai porsi UMKM tiap provinsi 👉
+
+Provinsimu gimana? 👇
+
+Sumber: Bank Indonesia (SEKDA), Juli 2026
+
+#EkonomiIndonesia #Perbankan #DataVisualization #UMKM
