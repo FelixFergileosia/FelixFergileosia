@@ -1,4 +1,28 @@
-# Caption LinkedIn (santai)
+# Caption LinkedIn
+
+## Versi D — netral & informatif (disarankan)
+
+Aku iseng ambil data Statistik Ekonomi dan Keuangan Daerah (SEKDA) dari Bank Indonesia, posisi Juli 2026, terus aku olah jadi beberapa visual biar lebih gampang dibaca. 📊
+
+Beberapa angka yang menurutku menarik:
+
+💰 52% simpanan bank nasional tercatat di DKI Jakarta. Untuk kredit, porsi Jakarta 35%.
+
+📈 Di 29 dari 34 provinsi pada data ini, nilai kredit lebih besar dari simpanan. Rasio tertinggi ada di Gorontalo, sekitar Rp3,4 kredit untuk tiap Rp1 simpanan.
+
+🛒 Porsi kredit konsumsi paling tinggi di Maluku (64%) dan paling rendah di Jakarta (9,5%).
+
+🏪 Secara nasional, 17% kredit adalah kredit UMKM. Porsi tertinggi di Sulawesi Barat (40%), terendah di Jakarta (5%).
+
+Satu hal yang perlu diingat waktu baca data ini: simpanan dicatat berdasarkan lokasi kantor bank, bukan lokasi pemilik dananya. Jadi angka per provinsi belum tentu menggambarkan di mana uangnya benar-benar dipakai.
+
+Aku software engineer, bukan ekonom, jadi aku sengaja nggak narik kesimpulan. Buat teman-teman yang lebih paham, gimana kalian membaca angka-angka ini? Dan provinsimu ada di posisi mana? 👇
+
+Datanya publik dan bisa dicek langsung di situs BI. Kalau ada yang keliru dari pengolahanku, kabari ya 🙏
+
+Sumber: Bank Indonesia, Statistik Ekonomi dan Keuangan Daerah (SEKDA), Juli 2026
+
+#EkonomiIndonesia #Perbankan #DataVisualization #UMKM #LiterasiKeuangan
 
 ## Versi A — utama (sudah di-fact-check)
 

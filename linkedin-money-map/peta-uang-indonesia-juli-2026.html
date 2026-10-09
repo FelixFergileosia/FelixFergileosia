@@ -106,7 +106,7 @@ const DATA = [{"provinsi":"Aceh","kode":11,"simpanan":48902427,"kredit":61621991
 <section class="slide" id="s3">
   <div class="kicker">Rasio kredit terhadap simpanan</div>
   <h1 id="s3-h"></h1>
-  <p class="sub">Rasio kredit / simpanan (LDR) per provinsi, %. Di atas 100% berarti kredit yang disalurkan lebih besar dari dana yang dihimpun di provinsi itu.</p>
+  <p class="sub">Rasio kredit / simpanan (LDR) per provinsi, %. Di atas 100% berarti nilai kredit lebih besar dari simpanan yang tercatat di provinsi itu.</p>
   <div class="legend"><span><i style="background:var(--s2)"></i>Kredit &gt; simpanan</span><span><i style="background:var(--s1)"></i>Kredit &lt; simpanan</span></div>
   <div class="chart" id="c3"></div>
   <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026</span><span class="page">3 / 6</span></footer>
@@ -134,9 +134,9 @@ const DATA = [{"provinsi":"Aceh","kode":11,"simpanan":48902427,"kredit":61621991
 <!-- 6 · TAKEAWAYS -->
 <section class="slide" id="s6">
   <div class="kicker">Ringkasan</div>
-  <h1>Apa yang bisa kita baca dari peta ini?</h1>
+  <h1>Ringkasan angka</h1>
   <div class="points" id="points"></div>
-  <div class="cta">Provinsi Anda ada di posisi mana? Tulis di kolom komentar 👇</div>
+  <div class="cta">Bagaimana Anda membaca angka-angka ini? Tulis di kolom komentar 👇</div>
   <p class="note" id="note"></p>
   <footer><span><b>Sumber:</b> Bank Indonesia, SEKDA, Juli 2026 · 34 provinsi</span><span class="page">6 / 6</span></footer>
 </section>
@@ -203,7 +203,7 @@ window.STATS = { S, K, ldr: K / S * 100, jktS: jkt.simpanan / S * 100, jktK: jkt
 const jS = jkt.simpanan / S * 100, jK = jkt.kredit / K * 100;
 document.getElementById("hero-num").innerHTML = Math.round(jS) + "<small>%</small>";
 document.getElementById("hero-cap").innerHTML =
-  `dari total <b>Rp${trn(S)} triliun</b> simpanan masyarakat di bank berada di <b>DKI Jakarta</b>, padahal kredit yang disalurkan di sana hanya <b>${pct(jK, 0)}</b> dari total nasional.`;
+  `dari total <b>Rp${trn(S)} triliun</b> simpanan di bank tercatat di <b>DKI Jakarta</b>. Untuk kredit, porsi Jakarta <b>${pct(jK, 0)}</b> dari total nasional.`;
 document.getElementById("cover-split").innerHTML = [
   ["Simpanan (DPK)", jS, `Rp${trn(S)} T`],
   ["Kredit", jK, `Rp${trn(K)} T`],
@@ -222,7 +222,7 @@ document.getElementById("cover-tiles").innerHTML = [
 // ---------- 2 · share simpanan vs kredit ----------
 (() => {
   document.getElementById("s2-h").textContent =
-    `Jakarta menghimpun ${pct(jS, 0)} simpanan nasional, tapi hanya menyalurkan ${pct(jK, 0)} kredit.`;
+    `Jakarta: ${pct(jS, 0)} simpanan nasional, ${pct(jK, 0)} kredit nasional.`;
   const top = [...rows].sort((a, b) => b.simpanan - a.simpanan);
   const show = top.slice(0, 10).map(d => ({ name: d.provinsi, s: d.simpanan / S * 100, k: d.kredit / K * 100 }));
   const rest = top.slice(10);
@@ -252,7 +252,7 @@ document.getElementById("cover-tiles").innerHTML = [
 (() => {
   const g = byLdr[0];
   document.getElementById("s3-h").textContent =
-    `${over.length} dari 34 provinsi menyalurkan kredit lebih besar dari simpanan yang dihimpunnya.`;
+    `Di ${over.length} dari 34 provinsi, nilai kredit lebih besar dari simpanan.`;
   const { svg, W, H } = svgIn("c3");
   const labelW = 250, valW = 70, x0 = labelW, pw = W - labelW - valW;
   const max = 350, sx = v => v / max * pw;
@@ -278,14 +278,14 @@ document.getElementById("cover-tiles").innerHTML = [
   const gy = topPad + rowH / 2;
   ann(x0 + sx(215), topPad + 9.5 * rowH, [`${g.provinsi}: ${num(g.ldr, 0)}%`, `≈ Rp${num(g.ldr / 100, 1)} kredit untuk`, `setiap Rp1 simpanan`]);
   const jy = topPad + byLdr.indexOf(jkt) * rowH + rowH / 2;
-  ann(x0 + sx(140), jy - 26, [`DKI Jakarta: ${num(jkt.ldr, 0)}%`, `surplus simpanan ±Rp${trn(jkt.simpanan - jkt.kredit)} T`]);
+  ann(x0 + sx(140), jy - 26, [`DKI Jakarta: ${num(jkt.ldr, 0)}%`, `simpanan Rp${trn(jkt.simpanan)} T, kredit Rp${trn(jkt.kredit)} T`]);
 })();
 
 // ---------- 4 · komposisi kredit ----------
 (() => {
   const hi = byKons[0];
   document.getElementById("s4-h").textContent =
-    `${hi.provinsi}: ${pct(hi.konsShare, 0)} kreditnya untuk konsumsi. Jakarta: hanya ${pct(jkt.konsShare, 1)}.`;
+    `${hi.provinsi}: ${pct(hi.konsShare, 0)} kreditnya untuk konsumsi. Jakarta: ${pct(jkt.konsShare, 1)}.`;
   const { svg, W, H } = svgIn("c4");
   const labelW = 250, x0 = labelW, pw = W - labelW - 4;
   const topPad = 34, rowH = (H - topPad) / byKons.length, bh = Math.min(22, rowH - 4), gap = 2;
@@ -313,7 +313,7 @@ document.getElementById("cover-tiles").innerHTML = [
 (() => {
   const hi = byUmkm[0], nat = U / K * 100;
   document.getElementById("s5-h").textContent =
-    `Kredit UMKM: ${pct(hi.umkmShare, 0)} di ${hi.provinsi}, hanya ${pct(jkt.umkmShare, 0)} di Jakarta.`;
+    `Porsi kredit UMKM: ${pct(hi.umkmShare, 0)} di ${hi.provinsi}, ${pct(jkt.umkmShare, 0)} di Jakarta.`;
   const { svg, W, H } = svgIn("c5");
   const labelW = 250, valW = 70, x0 = labelW, pw = W - labelW - valW;
   const max = 45, sx = v => v / max * pw;
@@ -340,13 +340,13 @@ document.getElementById("cover-tiles").innerHTML = [
 
 // ---------- 6 · takeaways ----------
 document.getElementById("points").innerHTML = [
-  [`Uang menumpuk di Jakarta`, `${pct(jS)} simpanan nasional tercatat di Jakarta, sementara porsi kreditnya ${pct(jK)}. Pulau Jawa secara keseluruhan memegang ${pct(jawaS / S * 100, 0)} simpanan dan ${pct(jawaK / K * 100, 0)} kredit.`],
-  [`Daerah meminjam lebih dari yang ditabung`, `${over.length} dari 34 provinsi punya rasio kredit/simpanan di atas 100%. Tertinggi ${byLdr[0].provinsi} (${num(byLdr[0].ldr, 0)}%), ${byLdr[1].provinsi} (${num(byLdr[1].ldr, 0)}%), dan ${byLdr[2].provinsi} (${num(byLdr[2].ldr, 0)}%).`],
-  [`Wajah kredit berbeda per daerah`, `Kredit konsumsi mencapai ${pct(byKons[0].konsShare, 0)} di ${byKons[0].provinsi}, tapi hanya ${pct(jkt.konsShare)} di Jakarta yang didominasi kredit korporasi (modal kerja & investasi).`],
-  [`UMKM paling terasa di daerah`, `Secara nasional ${pct(U / K * 100)} kredit mengalir ke UMKM. Porsinya ${pct(byUmkm[0].umkmShare, 0)} di ${byUmkm[0].provinsi}, dan hanya ${pct(jkt.umkmShare)} di Jakarta.`],
+  [`Porsi simpanan dan kredit`, `${pct(jS)} simpanan nasional tercatat di Jakarta, dan porsi kreditnya ${pct(jK)}. Pulau Jawa secara keseluruhan memegang ${pct(jawaS / S * 100, 0)} simpanan dan ${pct(jawaK / K * 100, 0)} kredit.`],
+  [`Rasio kredit terhadap simpanan`, `${over.length} dari 34 provinsi punya rasio kredit/simpanan di atas 100%. Tertinggi ${byLdr[0].provinsi} (${num(byLdr[0].ldr, 0)}%), ${byLdr[1].provinsi} (${num(byLdr[1].ldr, 0)}%), dan ${byLdr[2].provinsi} (${num(byLdr[2].ldr, 0)}%).`],
+  [`Komposisi kredit`, `Porsi kredit konsumsi tertinggi di ${byKons[0].provinsi} (${pct(byKons[0].konsShare, 0)}) dan terendah di Jakarta (${pct(jkt.konsShare)}). Di Jakarta, sisanya kredit modal kerja dan investasi.`],
+  [`Kredit UMKM`, `Secara nasional ${pct(U / K * 100)} kredit adalah kredit UMKM. Porsi tertinggi di ${byUmkm[0].provinsi} (${pct(byUmkm[0].umkmShare, 0)}), terendah di Jakarta (${pct(jkt.umkmShare)}).`],
 ].map(([h, p], i) => `<div class="pt"><div class="n">${i + 1}</div><div><h3>${h}</h3><p>${p}</p></div></div>`).join("");
 document.getElementById("note").innerHTML =
-  `<b>Catatan:</b> data dicatat berdasarkan lokasi kantor bank, sehingga simpanan korporasi dan instansi yang berkantor pusat di Jakarta ikut tercatat di Jakarta, meskipun aktivitas usahanya tersebar di daerah. Rasio di atas 100% menandakan sebagian kredit di provinsi itu didanai dari luar daerah, misalnya dari dana yang dihimpun bank di provinsi lain.`;
+  `<b>Catatan:</b> data dicatat berdasarkan lokasi kantor bank, sehingga banyak simpanan korporasi dan instansi yang berkantor pusat di Jakarta ikut tercatat di Jakarta, meskipun aktivitas usahanya bisa berada di daerah lain. Angka per provinsi karena itu belum tentu menggambarkan di mana dananya benar-benar digunakan.`;
 </script>
 </body>
 </html>
